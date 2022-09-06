@@ -1,0 +1,296 @@
+<div class="container">
+    <div class="row">
+      <div class="col-md-12">
+          <div class="card">
+              <div class="card-header">
+                  <h4 class="card-title">
+                      User Details
+                  </h4>
+                  <div class="create_button">                    
+                      <button type="button" class="add-product" data-toggle="modal" data-target="#exampleModal">
+                       User Registration
+                      </button>
+                  </div>
+              </div>
+              <div class="card-body">
+                  <div class="table-responsive">
+                      <table class="table">
+                          <thead class=" text-primary">
+                              <th>
+                                  S.No
+                              </th>
+                              <th>
+                                  Name
+                              </th>
+                              <th>
+                                  Mobile Number
+                              </th>                          
+  
+                              <th>
+                                  Actions
+                              </th>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let userDetails of userList; let i = index">
+                                  <td>
+                                      {{ i + 1 }}
+                                  </td>
+                                  <td>
+                                      <p>
+                                          {{userDetails?.name}}
+                                      </p>
+                                  </td>
+                                                         
+                                  <td>
+                                      <p>
+                                          {{userDetails?.phoneNumber}}
+                                      </p>
+                                   
+                                  </td>
+                                  
+                                  <td>
+                                      <button class="btn-green" type="button" (click)="UserView(userDetails)">
+                                        <i class="fas fa-eye"></i>
+                                      </button>
+  
+                                      <button class="btn-blue" type="button" (click)="userEdit(userDetails)">
+                                          <i class="fas fa-pen"></i>
+                                        </button>
+                                      
+                                      <button class="btn-red" type="button" (click)="Delete(userDetails)">
+                                        <i class="fas fa-trash"></i>
+                                      </button>
+                                    </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  </div>
+  
+  <!-- Create Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">User Registration </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="RegisterForm">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label>Name
+                  <sup>
+                    <i class="fa fa-asterisk" aria-hidden="true"></i>
+                  </sup>
+                </label>
+                <input type="text" placeholder="" class="form-control" formControlName="Name" [class.is-invalid]="
+                    (RegisterForm.get('Name')?.invalid &&
+                    RegisterForm.get('Name')?.touched) ||
+                    (RegisterForm.get('Name')?.pristine && hasError)
+                  " />
+  
+                <span class="error" *ngIf="
+                    (RegisterForm.get('Name')?.invalid &&
+                    RegisterForm.get('Name')?.touched) ||
+                    (RegisterForm.get('Name')?.pristine && hasError)
+                  ">
+                  Please enter your Name
+                </span>
+              </div>
+  
+              <div class="col-md-6 form-group">
+                  <label>Mobile Number
+                    <sup>
+                      <i class="fa fa-asterisk" aria-hidden="true"></i>
+                    </sup>
+                  </label>
+                  <input type="text" placeholder="" class="form-control" formControlName="number" [class.is-invalid]="
+                      (RegisterForm.get('number')?.invalid &&
+                      RegisterForm.get('number')?.touched) ||
+                      (RegisterForm.get('number')?.pristine && hasError)
+                    " />
+    
+                  <span class="error" *ngIf="
+                      (RegisterForm.get('number')?.invalid &&
+                      RegisterForm.get('number')?.touched) ||
+                      (RegisterForm.get('number')?.pristine && hasError)
+                    ">
+                    Please enter your Mobile Number
+                  </span>
+              </div>
+  
+              <div class="col-md-6 form-group">
+                  <label>Password
+                    <sup>
+                      <i class="fa fa-asterisk" aria-hidden="true"></i>
+                    </sup>
+                  </label>
+                  <input type="text" placeholder="" class="form-control" formControlName="password" [class.is-invalid]="
+                      (RegisterForm.get('password')?.invalid &&
+                      RegisterForm.get('password')?.touched) ||
+                      (RegisterForm.get('password')?.pristine && hasError)
+                    " />
+    
+                  <span class="error" *ngIf="
+                      (RegisterForm.get('password')?.invalid &&
+                      RegisterForm.get('password')?.touched) ||
+                      (RegisterForm.get('password')?.pristine && hasError)
+                    ">
+                    Please enter your password
+                  </span>
+              </div>
+            </div>  
+  
+              
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary" (click)="adminRegister()">Register</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- view Modal -->
+  <div class="modal fade" id="ViewModal" tabindex="-1" role="dialog" aria-labelledby="ViewProductModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ViewProductModalLabel">User Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <section class="detailsView">
+                <div class="userdetailsView">
+                  <div class="row">
+                      <div class="col-md-6">
+                          <div class="User_detailss">
+                              <label>Name :</label>
+                              <p>{{ UserDetailsView?.name}}</p>
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="User_detailss">
+                              <label>Mobile No :</label>
+                              <p>{{ UserDetailsView?.phoneNumber }}</p>
+                          </div>
+                        </div>
+                      <div class="col-md-6">
+                        <div class="User_detailss">
+                            <label>Password :</label>
+                            <p>{{ UserDetailsView?.password}}</p>
+                        </div>
+                      </div>
+                      
+                      
+                  </div>
+                </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Edit Modal -->
+  <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="EditVendorModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="EditVendorModal">User Registration Update</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="EditForm">
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label>Name
+                <sup>
+                  <i class="fa fa-asterisk" aria-hidden="true"></i>
+                </sup>
+              </label>
+              <input type="text" placeholder="" class="form-control" formControlName="Name" [class.is-invalid]="
+                  (EditForm.get('Name')?.invalid &&
+                  EditForm.get('Name')?.touched) ||
+                  (EditForm.get('Name')?.pristine && hasError)
+                " />
+  
+              <span class="error" *ngIf="
+                  (EditForm.get('Name')?.invalid &&
+                  EditForm.get('Name')?.touched) ||
+                  (EditForm.get('Name')?.pristine && hasError)
+                ">
+                Please enter your  Name
+              </span>
+            </div>
+  
+            <div class="col-md-6 form-group">
+                <label>Mobile No :
+                  <sup>
+                    <i class="fa fa-asterisk" aria-hidden="true"></i>
+                  </sup>
+                </label>
+                <input type="text" placeholder="" class="form-control" formControlName="number" [class.is-invalid]="
+                    (EditForm.get('number')?.invalid &&
+                    EditForm.get('number')?.touched) ||
+                    (EditForm.get('number')?.pristine && hasError)
+                  " />
+  
+                <span class="error" *ngIf="
+                    (EditForm.get('number')?.invalid &&
+                    EditForm.get('number')?.touched) ||
+                    (EditForm.get('number')?.pristine && hasError)
+                  ">
+                  Please enter your Mobile Number
+                </span>
+            </div>
+  
+            <div class="col-md-6 form-group">
+                <label>Password :
+                  <sup>
+                    <i class="fa fa-asterisk" aria-hidden="true"></i>
+                  </sup>
+                </label>
+                <input type="text" placeholder="" class="form-control" formControlName="password" [class.is-invalid]="
+                    (EditForm.get('password')?.invalid &&
+                    EditForm.get('password')?.touched) ||
+                    (EditForm.get('password')?.pristine && hasError)
+                  " />
+  
+                <span class="error" *ngIf="
+                    (EditForm.get('password')?.invalid &&
+                    EditForm.get('password')?.touched) ||
+                    (EditForm.get('password')?.pristine && hasError)
+                  ">
+                  Please enter your password
+                </span>
+            </div>
+  
+            
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" (click)="UpdateUser()">Update User</button>
+      </div>
+    </div>
+  </div>
+  </div>
