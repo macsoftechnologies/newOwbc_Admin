@@ -1,1 +1,274 @@
-<p>clientdetails works!</p>
+<div class="container">
+    <div class="row">
+      <div class="col-md-12">
+          <div class="card">
+              <div class="card-header">
+                  <h4 class="card-title">
+                      Client Details
+                  </h4>
+                  <div class="create_button">                    
+                      <button type="button" class="add-product" data-toggle="modal" data-target="#exampleModal">
+                       Client Registration
+                      </button>
+                  </div>
+              </div>
+              <div class="card-body">
+                  <div class="table-responsive">
+                      <table class="table">
+                          <thead class=" text-primary">
+                              <th>
+                                  S.No
+                              </th>
+                              <th>
+                                  Name
+                              </th>
+                              <th>
+                                  Mobile Number
+                              </th>      
+                              <th>
+                                  Address
+                              </th>                   
+                              <th>
+                                  Actions
+                              </th>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let clientDetails of clientList; let i = index">
+                                  <td>
+                                      {{ i + 1 }}
+                                  </td>
+                                  <td>
+                                      <p>
+                                          {{clientDetails?.clientName}}
+                                      </p>
+                                  </td>
+                                                         
+                                  <td>
+                                      <p>
+                                          {{clientDetails?.clientPhNumber}}
+                                      </p>
+                                   
+                                  </td>
+
+                                  <td>                                    
+                                    <p>
+                                        {{clientDetails?.Address}}
+                                    </p>                                 
+                                </td>
+                                  
+                                  <td>
+                                      <button class="btn-green" type="button" (click)="ClientView(clientDetails)">
+                                        <i class="fas fa-eye"></i>
+                                      </button>
+  
+                                      <button class="btn-blue" type="button" (click)="clientEdit(clientDetails)">
+                                          <i class="fas fa-pen"></i>
+                                        </button>
+                                      
+                                      <button class="btn-red" type="button" (click)="Delete(clientDetails)">
+                                        <i class="fas fa-trash"></i>
+                                      </button>
+                                    </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  </div>
+
+   <!-- Create Modal -->
+   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog modal-lg" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="exampleModalLabel">Client Registration </h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <div class="modal-body">
+         <form [formGroup]="createForm">
+           <div class="row">
+             <div class="col-md-6 form-group">
+               <label>Client Name
+                 <sup>
+                   <i class="fa fa-asterisk" aria-hidden="true"></i>
+                 </sup>
+               </label>
+               <input type="text" placeholder="" class="form-control" formControlName="CliName" [class.is-invalid]="
+                   (createForm.get('CliName')?.invalid &&
+                   createForm.get('CliName')?.touched) ||
+                   (createForm.get('CliName')?.pristine && hasError)
+                 " />
+ 
+               <span class="error" *ngIf="
+                   (createForm.get('CliName')?.invalid &&
+                   createForm.get('CliName')?.touched) ||
+                   (createForm.get('CliName')?.pristine && hasError)
+                 ">
+                 Please enter your Name
+               </span>
+             </div>
+ 
+             <div class="col-md-6 form-group">
+                 <label>Mobile Number
+                   <sup>
+                     <i class="fa fa-asterisk" aria-hidden="true"></i>
+                   </sup>
+                 </label>
+                 <input type="text" placeholder="" class="form-control" formControlName="CliNum" [class.is-invalid]="
+                     (createForm.get('CliNum')?.invalid &&
+                     createForm.get('CliNum')?.touched) ||
+                     (createForm.get('CliNum')?.pristine && hasError)
+                   " />
+   
+                 <span class="error" *ngIf="
+                     (createForm.get('CliNum')?.invalid &&
+                     createForm.get('CliNum')?.touched) ||
+                     (createForm.get('CliNum')?.pristine && hasError)
+                   ">
+                   Please enter your Mobile Number
+                 </span>
+             </div>
+ 
+             <div class="col-md-6 form-group">
+                 <label>Address
+                   <sup>
+                     <i class="fa fa-asterisk" aria-hidden="true"></i>
+                   </sup>
+                 </label>
+                 <input type="text" placeholder="" class="form-control" formControlName="CliAddr" [class.is-invalid]="
+                     (createForm.get('CliAddr')?.invalid &&
+                     createForm.get('CliAddr')?.touched) ||
+                     (createForm.get('CliAddr')?.pristine && hasError)
+                   " />
+   
+                 <span class="error" *ngIf="
+                     (createForm.get('CliAddr')?.invalid &&
+                     createForm.get('CliAddr')?.touched) ||
+                     (createForm.get('CliAddr')?.pristine && hasError)
+                   ">
+                   Please enter your Address
+                 </span>
+             </div>
+           </div>  
+ 
+             
+         </form>
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" data-dismiss="modal">
+           Close
+         </button>
+         <button type="button" class="btn btn-primary" (click)="addClient()">Register</button>
+       </div>
+     </div>
+   </div>
+ </div>
+
+ <!-- view Modal -->
+ <div class="modal fade" id="ViewModal" tabindex="-1" role="dialog" aria-labelledby="ViewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ViewProductModalLabel">Client Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <section class="detailsView">
+              <div class="userdetailsView">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="User_detailss">
+                            <label>Client Name :</label>
+                            <p>{{ ClientDetailsView?.clientName}}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="User_detailss">
+                            <label>Mobile Number :</label>
+                            <p>{{ ClientDetailsView?.clientPhNumber }}</p>
+                        </div>
+                      </div>
+                    <div class="col-md-6">
+                      <div class="User_detailss">
+                          <label>Address :</label>
+                          <p>{{ ClientDetailsView?.Address}}</p>
+                      </div>
+                    </div>
+                    
+                    
+                </div>
+              </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="EditVendorModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="EditVendorModal">Client Registration Update</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="EditForm">
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label>Client Name
+                <sup>
+                  <i class="fa fa-asterisk" aria-hidden="true"></i>
+                </sup>
+              </label>
+              <input type="text" placeholder="" class="form-control" formControlName="cliname" />
+  
+              
+            </div>
+  
+            <div class="col-md-6 form-group">
+                <label>Mobile No :
+                  <sup>
+                    <i class="fa fa-asterisk" aria-hidden="true"></i>
+                  </sup>
+                </label>
+                <input type="text" placeholder="" class="form-control" formControlName="clinum"  />
+  
+                
+            </div>
+  
+            <div class="col-md-6 form-group">
+                <label>Address :
+                  <sup>
+                    <i class="fa fa-asterisk" aria-hidden="true"></i>
+                  </sup>
+                </label>
+                <input type="text" placeholder="" class="form-control" formControlName="cliaddr"  />
+  
+                
+            </div>
+  
+            
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" (click)="UpdateClient()">Update Client</button>
+      </div>
+    </div>
+  </div>
+  </div>

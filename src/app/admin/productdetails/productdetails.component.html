@@ -1,1 +1,275 @@
-<p>productdetails works!</p>
+<div class="container">
+    <div class="row">
+      <div class="col-md-12">
+          <div class="card">
+              <div class="card-header">
+                  <h4 class="card-title">
+                      Product Details
+                  </h4>
+                  <div class="create_button">                    
+                      <button type="button" class="add-product" data-toggle="modal" data-target="#exampleModal">
+                       Product Registration
+                      </button>
+                  </div>
+              </div>
+              <div class="card-body">
+                  <div class="table-responsive">
+                      <table class="table">
+                          <thead class=" text-primary">
+                              <th>
+                                  S.No
+                              </th>
+                              <th>
+                                  Product Name
+                              </th>
+                              <th>
+                                  Product Price
+                              </th>      
+                              <th>
+                                  Specification
+                              </th>                   
+                              <th>
+                                  Actions
+                              </th>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let prodDetails of productList; let i = index">
+                                  <td>
+                                      {{ i + 1 }}
+                                  </td>
+                                  <td>
+                                      <p>
+                                          {{prodDetails?.productName}}
+                                      </p>
+                                  </td>
+                                                         
+                                  <td>
+                                      <p>
+                                          {{prodDetails?.price}}
+                                      </p>
+                                   
+                                  </td>
+
+                                  <td>                                    
+                                    <p>
+                                        {{prodDetails?.specifications}}
+                                    </p>                                 
+                                </td>
+                                  
+                                  <td>
+                                      <button class="btn-green" type="button" (click)="ProductView(prodDetails)">
+                                        <i class="fas fa-eye"></i>
+                                      </button>
+  
+                                      <button class="btn-blue" type="button" (click)="productEdit(prodDetails)">
+                                          <i class="fas fa-pen"></i>
+                                        </button>
+                                      
+                                      <button class="btn-red" type="button" (click)="Delete(prodDetails)">
+                                        <i class="fas fa-trash"></i>
+                                      </button>
+                                    </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  </div>
+
+   <!-- Create Modal -->
+   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog modal-lg" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="exampleModalLabel">Product Registration </h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <div class="modal-body">
+         <form [formGroup]="createForm">
+           <div class="row">
+             <div class="col-md-6 form-group">
+               <label>Product Name
+                 <sup>
+                   <i class="fa fa-asterisk" aria-hidden="true"></i>
+                 </sup>
+               </label>
+               <input type="text" placeholder="" class="form-control" formControlName="ProdName" [class.is-invalid]="
+                   (createForm.get('ProdName')?.invalid &&
+                   createForm.get('ProdName')?.touched) ||
+                   (createForm.get('ProdName')?.pristine && hasError)
+                 " />
+ 
+               <span class="error" *ngIf="
+                   (createForm.get('ProdName')?.invalid &&
+                   createForm.get('ProdName')?.touched) ||
+                   (createForm.get('ProdName')?.pristine && hasError)
+                 ">
+                 Please enter the Product Name
+               </span>
+             </div>
+ 
+             <div class="col-md-6 form-group">
+                 <label>Product Price
+                   <sup>
+                     <i class="fa fa-asterisk" aria-hidden="true"></i>
+                   </sup>
+                 </label>
+                 <input type="text" placeholder="" class="form-control" formControlName="ProdPrice" [class.is-invalid]="
+                     (createForm.get('ProdPrice')?.invalid &&
+                     createForm.get('ProdPrice')?.touched) ||
+                     (createForm.get('ProdPrice')?.pristine && hasError)
+                   " />
+   
+                 <span class="error" *ngIf="
+                     (createForm.get('ProdPrice')?.invalid &&
+                     createForm.get('ProdPrice')?.touched) ||
+                     (createForm.get('ProdPrice')?.pristine && hasError)
+                   ">
+                   Please enter the product price
+                 </span>
+             </div>
+ 
+             <div class="col-md-6 form-group">
+                 <label>Specification
+                   <sup>
+                     <i class="fa fa-asterisk" aria-hidden="true"></i>
+                   </sup>
+                 </label>
+                 <input type="text" placeholder="" class="form-control" formControlName="ProdSpec" [class.is-invalid]="
+                     (createForm.get('ProdSpec')?.invalid &&
+                     createForm.get('ProdSpec')?.touched) ||
+                     (createForm.get('ProdSpec')?.pristine && hasError)
+                   " />
+   
+                 <span class="error" *ngIf="
+                     (createForm.get('ProdSpec')?.invalid &&
+                     createForm.get('ProdSpec')?.touched) ||
+                     (createForm.get('ProdSpec')?.pristine && hasError)
+                   ">
+                   Please enter the specification
+                 </span>
+             </div>
+           </div>  
+ 
+             
+         </form>
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" data-dismiss="modal">
+           Close
+         </button>
+         <button type="button" class="btn btn-primary" (click)="addProduct()">Register</button>
+       </div>
+     </div>
+   </div>
+ </div>
+
+ <!-- view Modal -->
+ <div class="modal fade" id="ViewModal" tabindex="-1" role="dialog" aria-labelledby="ViewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ViewProductModalLabel">Product Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <section class="detailsView">
+              <div class="userdetailsView">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="User_detailss">
+                            <label>Product Name :</label>
+                            <p>{{ ProductDetailsView?.productName}}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="User_detailss">
+                            <label>Product Price :</label>
+                            <p>{{ ProductDetailsView?.price }}</p>
+                        </div>
+                      </div>
+                    <div class="col-md-6">
+                      <div class="User_detailss">
+                          <label>Specification :</label>
+                          <p>{{ ProductDetailsView?.specifications}}</p>
+                      </div>
+                    </div>
+                    
+                    
+                </div>
+              </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="EditVendorModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="EditVendorModal">Product Registration Update</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="EditForm">
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label>Product Name
+                <sup>
+                  <i class="fa fa-asterisk" aria-hidden="true"></i>
+                </sup>
+              </label>
+              <input type="text" placeholder="" class="form-control" formControlName="prodname" />
+  
+              
+            </div>
+  
+            <div class="col-md-6 form-group">
+                <label>Product Price :
+                  <sup>
+                    <i class="fa fa-asterisk" aria-hidden="true"></i>
+                  </sup>
+                </label>
+                <input type="text" placeholder="" class="form-control" formControlName="prodprice"  />
+  
+                
+            </div>
+  
+            <div class="col-md-6 form-group">
+                <label>Specification :
+                  <sup>
+                    <i class="fa fa-asterisk" aria-hidden="true"></i>
+                  </sup>
+                </label>
+                <input type="text" placeholder="" class="form-control" formControlName="prodspec"  />
+  
+                
+            </div>
+  
+            
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" (click)="UpdateProduct()">Update Product</button>
+      </div>
+    </div>
+  </div>
+  </div>
+
